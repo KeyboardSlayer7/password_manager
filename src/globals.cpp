@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <Windows.h>
 
 #include "globals.h"
 
@@ -68,4 +69,49 @@ void print_array(unsigned char* array, size_t length)
         }
 
     }
+}
+
+void copy(const byte_string& text)
+{   
+    if (!OpenClipboard(NULL))
+    {
+        std::string message = "\n\033[91m[ERROR] " + std::to_string(GetLastError()) + "\033[m"; 
+        throw std::runtime_error(message);
+    }
+
+    EmptyClipboard();
+
+    HGLOBAL handle = GlobalAlloc(GMEM_MOVEABLE, (text.length() + 1) * sizeof(byte));
+
+    if (handle == NULL)
+    {
+        std::string message = "\n\033[91m[ERROR] " + std::to_string(GetLastError()) + "\033[m";
+        throw std::runtime_error(message);
+    }
+
+    LPTSTR lptstr = (LPTSTR)GlobalLock(handle);
+    
+    if (lptstr == NULL)
+    {
+        std::string message = "\n\033[91m[ERROR] " + std::to_string(GetLastError()) + "\033[m";
+        throw std::runtime_error(message);
+    }
+
+    memcpy(lptstr, text.data(), text.length() * sizeof(byte));
+    lptstr[text.length()] = '\0'; 
+
+    if (!GlobalUnlock(handle) && GetLastError() > 0)
+    {
+        std::string message = "\n\033[91m[ERROR] " + std::to_string(GetLastError()) + "\033[m";
+        // throw std::runtime_error(message);
+        std::cout << message << "\n";
+    }
+    
+    if (SetClipboardData(CF_TEXT, handle) == NULL)
+    {
+        std::string message = "\n\033[91m[ERROR] " + std::to_string(GetLastError()) + "\033[m";
+        throw std::runtime_error(message);
+    }
+
+    CloseClipboard();
 }

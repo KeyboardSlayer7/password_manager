@@ -14,6 +14,7 @@ void new_entry(json& data, std::string& password)
     generator.generate_parameters();
     generator.generate_key(password.c_str());
 
+    std::cout << "\n";
     std::string website = input("Website: ");
     std::string website_password = input("Website Password: ");
 
@@ -29,15 +30,25 @@ void new_entry(json& data, std::string& password)
 
 void get_entry(json& data, std::string& password)
 {
+    std::cout << "\n";
     std::string website = input("Website: ");
 
-    std::vector<std::string> website_password = data[website];
+    std::vector<std::string> website_password; 
+
+    try { 
+        website_password = data.at(website);
+    }
+    catch (const json::out_of_range& e)
+    {
+        std::cout << "\n\033[91m[ERROR] No such website \n\033[m";
+        return;
+    }
 
     Salt salt;
     un_hex(website_password[0], salt.data(), PKCS5_SALT_LEN);
 
-    std::cout << website_password[0] << "\n";
-    print_array(salt.data(), PKCS5_SALT_LEN); 
+    // std::cout << website_password[0] << "\n";
+    // print_array(salt.data(), PKCS5_SALT_LEN); 
 
     IV iv;
     un_hex(website_password[1], iv.data(), EVP_MAX_IV_LENGTH);
@@ -50,6 +61,7 @@ void get_entry(json& data, std::string& password)
 
     byte_string plaintext = generator.decrypt(byte_string(ciphertext.begin(), ciphertext.begin() + ciphertext_length));
 
+    copy(plaintext);
     std::cout << website << "'s password: " << plaintext.c_str() << "\n";
 }
 
@@ -61,17 +73,18 @@ void get_entry(json& data, std::string& password)
 
 void delete_entry(json& data)
 {
+    std::cout << "\n";
     std::string website = input("Website: ");
 
-    std::string prompt = "Delete password for " + website + " (Yes/No): "; 
+    std::string prompt = "\n\033[91mDelete password for " + website + "? (y/N): \033[m"; 
     std::string option = input(prompt.c_str());
 
-    if (option == "Yes")
+    if (option[0] == 'y') 
     {
         data[website].clear();
         data.erase(website);
     }
-    else if (option == "No")
+    else if (option[0] == 'N')
     {
         return;
     }

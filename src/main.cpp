@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <string>
 #include <sstream>
+#include <Windows.h>
 
 #include "globals.h"
 #include "options.h"
@@ -13,7 +14,15 @@ using json = nlohmann::json;
 
 int main(int argc, char* argv[])
 {
+    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD mode = 0;
+    GetConsoleMode(handle, &mode);
+    SetConsoleMode(handle, mode & (~ENABLE_ECHO_INPUT));
+
     std::string password = input("Password: ");
+
+    GetConsoleMode(handle, &mode);
+    SetConsoleMode(handle, mode | ENABLE_ECHO_INPUT);
 
     std::fstream file("C:/etc/manager.json", std::ios_base::in | std::ios_base::out);
 
@@ -25,7 +34,7 @@ int main(int argc, char* argv[])
     {
         std::string user_input;
         
-        user_input = input("New (1), Get Exisiting (2), Update Exisiting (3), Delete Exisiting (4), Exit (5): ");
+        user_input = input("\nMain Menu\n  (1) New\n  (2) Get Exisiting\n  (3) Update Exisiting\n  (4) Delete Exisiting\n  (5) Exit\nYour selection?: ");
         char option = user_input[0];
 
         switch (option)
@@ -43,6 +52,7 @@ int main(int argc, char* argv[])
                 delete_entry(json_file); 
                 break;
             case '5':
+                std::cout << "\nQuitting\n";
                 running = false;
                 break;
             default:

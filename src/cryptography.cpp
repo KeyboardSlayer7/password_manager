@@ -35,7 +35,7 @@ int Cryptography::generate_parameters()
     if (!RAND_bytes(m_salt.data(), PKCS5_SALT_LEN))
         output = 0;
 
-    print_array(m_salt.data(), PKCS5_SALT_LEN); 
+    // print_array(m_salt.data(), PKCS5_SALT_LEN); 
 
     if (!RAND_bytes(m_iv.data(), EVP_MAX_IV_LENGTH))
         output = 0;

@@ -4,8 +4,7 @@
 #include <memory>
 #include "openssl/evp.h"
 
-typedef unsigned char byte;
-typedef std::basic_string<byte> byte_string;
+#include "globals.h"
 
 using EVP_CIPHER_CTX_ptr = std::unique_ptr<EVP_CIPHER_CTX, decltype(&EVP_CIPHER_CTX_free)>;
 

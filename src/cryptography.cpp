@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 #include "cryptography.h"
 #include "globals.h"
@@ -6,6 +9,7 @@
 #include "openssl/evp.h"
 #include "openssl/rand.h"
 #include "openssl/err.h"
+#include "openssl/sha.h"
 
 Cryptography::Cryptography()
 {
@@ -117,4 +121,24 @@ byte_string Cryptography::decrypt(const byte_string& ciphertext)
 Cryptography::~Cryptography()
 {
 
+}
+
+std::string sha256(const std::string& text)
+{
+    SHA256_CTX ctx;
+
+    std::array<byte, SHA256_DIGEST_LENGTH> hash;
+    
+    SHA256_Init(&ctx);
+    SHA256_Update(&ctx, text.data(), text.length());
+    SHA256_Final(hash.data(), &ctx);
+
+    std::stringstream ss;
+
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i)
+    {
+        ss << std::hex << std::setw(sizeof(byte) * 2) << std::setfill('0') << static_cast<int>(hash[i]);
+    }
+
+    return ss.str(); 
 }

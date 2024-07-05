@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <iomanip>
 
 #include "options.h"
 #include "globals.h"
@@ -7,6 +9,61 @@
 #include "cryptography.h"
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
+
+void sign_up()
+{
+    std::cout << "\nSign up\n";
+    std::string username = input("\nUsername: "); 
+
+    disable_echo();    
+    std::string password = input("Password: ");
+    enable_echo();
+
+    std::fstream file("C:/etc/users.json", std::ios_base::in | std::ios_base::out);
+
+    json file_json = json::parse(file);
+
+    file_json[username] = sha256(password);
+
+    file.seekg(0, file.beg);
+    file << std::setw(4) << file_json << std::endl;
+
+    file.close();
+}
+
+bool login(std::string& password_out)
+{
+    std::cout << "\nLog in\n";
+    std::string username = input("\nUsername: "); 
+
+    disable_echo();    
+    std::string password = input("Password: ");
+    enable_echo();
+
+    std::fstream file("C:/etc/users.json", std::ios_base::in | std::ios_base::out);
+
+    json file_json = json::parse(file);
+
+    try
+    {
+        if (file_json.at(username) == sha256(password))
+        {
+            password_out = password; 
+            return true;
+        } 
+        else
+        {
+            return false;
+        }
+    }
+    catch(const json::out_of_range& e)
+    {
+        // std::cout << "\n\033[91m[ERROR] No such user \n\033[m";
+        return false;
+    }
+
+    file.close();   
+}
 
 void new_entry(json& data, std::string& password)
 {

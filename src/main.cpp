@@ -14,15 +14,20 @@ using json = nlohmann::json;
 
 int main(int argc, char* argv[])
 {
-    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
-    DWORD mode = 0;
-    GetConsoleMode(handle, &mode);
-    SetConsoleMode(handle, mode & (~ENABLE_ECHO_INPUT));
+    std::string user = input("Password Manager\n  (1) Login\n  (2) Sign up\nYour selection?: ");
 
-    std::string password = input("Password: ");
+    if (user[0] == '2')
+    {
+        sign_up();
+    }
 
-    GetConsoleMode(handle, &mode);
-    SetConsoleMode(handle, mode | ENABLE_ECHO_INPUT);
+    std::string password; 
+    
+    if (!login(password))
+    {
+        std::cout << "\n\n\033[91m[ERROR] Incorrect username or password! \n\n\033[m";
+        main(argc, argv);
+    }
 
     std::fstream file("C:/etc/manager.json", std::ios_base::in | std::ios_base::out);
 

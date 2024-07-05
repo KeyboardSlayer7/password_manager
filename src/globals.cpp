@@ -115,3 +115,21 @@ void copy(const byte_string& text)
 
     CloseClipboard();
 }
+
+void disable_echo()
+{
+    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD mode = 0;
+    
+    GetConsoleMode(handle, &mode);
+    SetConsoleMode(handle, mode & (~ENABLE_ECHO_INPUT));
+}
+
+void enable_echo()
+{
+    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD mode = 0;
+    
+    GetConsoleMode(handle, &mode);
+    SetConsoleMode(handle, mode | ENABLE_ECHO_INPUT);
+}

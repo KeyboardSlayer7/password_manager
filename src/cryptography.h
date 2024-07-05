@@ -2,8 +2,9 @@
 
 #include <array>
 #include <memory>
-#include "openssl/evp.h"
+#include <string>
 
+#include "openssl/evp.h"
 #include "globals.h"
 
 using EVP_CIPHER_CTX_ptr = std::unique_ptr<EVP_CIPHER_CTX, decltype(&EVP_CIPHER_CTX_free)>;
@@ -32,3 +33,5 @@ private:
     IV m_iv; 
     Key m_key;
 };
+
+std::string sha256(const std::string& text);

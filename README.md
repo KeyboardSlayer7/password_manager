@@ -39,13 +39,19 @@ Requirements
 
 Clone repo
 
-`sh git clone https://github.com/KeyboardSlayer7/password_manager.git`
+```
+git clone https://github.com/KeyboardSlayer7/password_manager.git
+```
 
 CMake
 
-`sh cmake -B build`
+```
+cmake -B build
+```
 
-`sh cmake --build build`
+```
+cmake --build build
+```
 
 ## How 
 

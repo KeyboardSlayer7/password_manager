@@ -43,14 +43,18 @@ Clone repo
 git clone https://github.com/KeyboardSlayer7/password_manager.git
 ```
 
+Download OpenSSL
+
+Visit either [OpenSSL](https://openssl-library.org/source/) or their [GitHub Repository](https://github.com/openssl/openssl/releases/tag/openssl-3.4.1) and download and extract the library.
+
 CMake
 
 ```
-cmake -B build
+cmake -B build -DOPENSSL_ROOT_DIR=<path_to_openssl_directory> -A Win32
 ```
 
 ```
-cmake --build build
+cmake --build build --config Release
 ```
 
 ## How 

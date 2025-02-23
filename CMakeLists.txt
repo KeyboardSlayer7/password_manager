@@ -11,8 +11,11 @@ FetchContent_MakeAvailable(json)
 
 project(Manager VERSION 0.0.1 LANGUAGES C CXX)
 
-set(SOURCE_DIR /src)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY /bin)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(SOURCES 
 	${SOURCE_DIR}/cryptography.cpp
@@ -27,6 +30,17 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 find_package(OpenSSL REQUIRED)
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${json_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${json_SOURCE_DIR}/single_include)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::SSL OpenSSL::Crypto)
+
+set(DLL_FILES 
+    ${OPENSSL_ROOT_DIR}/libcrypto-3.dll
+    ${OPENSSL_ROOT_DIR}/libssl-3.dll
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${DLL_FILES}
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+)

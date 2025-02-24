@@ -4,3 +4,5 @@
 /build
 /*.sln
 /include
+/users
+*.json

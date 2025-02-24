@@ -19,7 +19,7 @@ void sign_up()
     std::string password = input("Password: ");
     enable_echo();
 
-    std::fstream file("C:/etc/users.json", std::ios_base::in | std::ios_base::out);
+    std::fstream file("users.json", std::ios_base::in | std::ios_base::out);
 
     json file_json = json::parse(file);
 
@@ -31,7 +31,7 @@ void sign_up()
     file.close();
 }
 
-bool login(std::string& password_out)
+bool login(std::string& username_out, std::string& password_out)
 {
     std::cout << "\nLog in\n";
     std::string username = input("\nUsername: "); 
@@ -40,7 +40,7 @@ bool login(std::string& password_out)
     std::string password = input("Password: ");
     enable_echo();
 
-    std::fstream file("C:/etc/users.json", std::ios_base::in | std::ios_base::out);
+    std::fstream file("users.json", std::ios_base::in | std::ios_base::out);
 
     json file_json = json::parse(file);
 
@@ -48,6 +48,7 @@ bool login(std::string& password_out)
     {
         if (file_json.at(username) == sha256(password))
         {
+            username_out = username;
             password_out = password; 
             return true;
         } 

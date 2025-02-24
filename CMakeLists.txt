@@ -24,7 +24,10 @@ set(SOURCES
 	${SOURCE_DIR}/globals.h
 	${SOURCE_DIR}/main.cpp
 	${SOURCE_DIR}/options.cpp
-	${SOURCE_DIR}/options.h)
+	${SOURCE_DIR}/options.h
+	${SOURCE_DIR}/app.h
+	${SOURCE_DIR}/app.cpp
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

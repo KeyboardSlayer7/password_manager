@@ -60,6 +60,7 @@ void Application::run()
             "(5) Exit\n "
             "Your selection?: "
         );
+
         char option = user_input[0];
 
         switch (option)

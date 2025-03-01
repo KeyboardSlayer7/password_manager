@@ -20,8 +20,8 @@ public:
     Cryptography(Salt salt, IV iv);
     ~Cryptography();
     
-    Salt get_salt();
-    IV get_IV();
+    const Salt& get_salt();
+    const IV& get_IV();
 
     int generate_parameters();
     int generate_key(const std::string& password);

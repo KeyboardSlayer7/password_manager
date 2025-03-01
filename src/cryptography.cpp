@@ -22,12 +22,12 @@ Cryptography::Cryptography(Salt salt, IV iv)
     m_iv = iv;
 }
 
-Salt Cryptography::get_salt()
+const Salt& Cryptography::get_salt()
 {
     return m_salt;
 }
 
-IV Cryptography::get_IV()
+const IV& Cryptography::get_IV()
 {
     return m_iv;
 }

@@ -59,4 +59,5 @@ cmake --build build --config Release
 
 ## How 
 
-
+## Feedback
+I've only been working with C/C++ for a few years and am still fairly new to CMake, so I'd love to hear your thoughts! If you find any bugs or have any suggestions, feel free to email me at keyboardslayer7@protonmail.com. Any feedback, big or small, is greatly appreciated!

@@ -2,9 +2,6 @@
 
 A simple terminal user interface password management application that uses C++ with OpenSSL and nlohmann/json.
 
-> [!Note]
-> Colored text may not work in some terminals.
-
 ## Why
 
 Password Manager was created as a side project to help me understand how a password manager works, as well as some other concepts including hashing and encryption.
@@ -15,12 +12,13 @@ Password Manager was created as a side project to help me understand how a passw
 
 - Creating log in details
 - Adding passwords
-- Retrieving passwords + Copy to clipboard (Windows only)
+- Retrieving passwords
+- Copy to clipboard (Windows only)
 - Deleting passwords
 
 :construction: In Progress
 
-- Copy to clipboard (linux)
+- Updating a password
 
 :bug: Known Issues
 
@@ -28,7 +26,8 @@ Password Manager was created as a side project to help me understand how a passw
 
 :bulb: Future Plans
 
-- 
+- Copy to clipboard in Linux
+- Ability to generate strong passwords
 
 ## Building
 
@@ -59,5 +58,8 @@ cmake --build build --config Release
 
 ## How 
 
+The password manager uses a master password based approach to encrypting password. A key is generated from the users master password, using a password based key derivation function, which is used to encrypt passwords for storing and decrypt passwords when retrieving them. The program uses the AES-256 encryption algorithm to handle encryption and decryption, and uses the SHA256 algorithm to store the users master password so that it can be checked every time the user tries to log in.
+
 ## Feedback
+
 I've only been working with C/C++ for a few years and am still fairly new to CMake, so I'd love to hear your thoughts! If you find any bugs or have any suggestions, feel free to email me at keyboardslayer7@protonmail.com. Any feedback, big or small, is greatly appreciated!
